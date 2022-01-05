@@ -1,0 +1,99 @@
+﻿@model KalaMarket.DataLayer.Entities.ProductEntities.Product
+
+@{
+    ViewData["Title"] = "AddProduct";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="col-lg-12 mt-4 p-3">
+    <div class="card-box">
+
+
+
+        <form asp-action="AddProducts" method="post" style="margin-top:5%;" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label asp-for="ProductFaTitle" for="emailAddress"> </label>
+                <input asp-for="ProductFaTitle" type="text" parsley-trigger="change" placeholder="عنوان محصول را به فارسی وارد نمایید " class="form-control" id="emailAddress" data-parsley-id="6">
+                <span asp-validation-for="ProductFaTitle" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ProductEnTitle" for="emailAddress"> </label>
+                <input asp-for="ProductEnTitle" type="text" parsley-trigger="change" placeholder="عنوان محصول را به خارجی وارد نمایید " class="form-control" id="emailAddress" data-parsley-id="6">
+                <span asp-validation-for="ProductEnTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductWeight" for="emailAddress"> </label>
+                <input asp-for="ProductWeight" type="number" parsley-trigger="change" class="form-control" id="emailAddress" data-parsley-id="6">
+                <span asp-validation-for="ProductWeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <select class="form-control" asp-for="ProductStar">
+                    <option value="1">تک ستاره</option>
+                    <option value="2">دو ستاره</option>
+                    <option value="3">سه سناره</option>
+                    <option value="4">چهار ستاره</option>
+                    <option value="5">پنج ستاره</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductTag" for="emailAddress"> </label>
+                <textarea asp-for="ProductTag" class="form-control">
+
+                        </textarea>
+                <div class="alert alert-warning form-control mt-4" style="margin-top: 10px;">
+                    برای جدا سازی برچسب ها از
+                    <strong class="text-danger">^</strong>
+                    استفاده کنید .
+                </div>
+                <span asp-validation-for="ProductTag" class="text-danger"></span>
+            </div>
+
+             <div class="form-group">
+                    <label for="emailAddress">دسته بندی ها</label>
+                    <select class="form-control" asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.Category,"CategoryId","CategoryFaTitle"))">
+                        <option value="">انتخاب کنید</option>
+                    </select>
+                </div>
+            <div class="form-group">
+                <label for="emailAddress">برند ها</label>
+                <select class="form-control" asp-for="BrandId" asp-items="@(new SelectList(ViewBag.brand,"BrandId","BrandName"))">
+                    <option value="">انتخاب کنید</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="file" name="file" class="form-control" />
+                <label>تصویر محصول</label>
+            </div>
+
+            <div class="checkbox checkbox-custom">
+                <input id="checkbox10" type="checkbox" asp-for="IsActive">
+                <label for="checkbox10">
+                    فعال باشد ؟!
+                </label>
+            </div>
+
+            <div class="checkbox checkbox-custom">
+                <input asp-for="IsOriginal" id="checkbox10" type="checkbox">
+                <label for="checkbox10">
+                    محصول اصلی است ؟!
+                </label>
+            </div>
+
+            <div class="form-group text-right m-b-0">
+                <button class="btn btn-success waves-effect waves-light" type="submit">
+                    ثبت اطلاعات
+                </button>
+                <a asp-action="ShowAllProducts" class="btn btn-danger waves-effect waves-light m-l-5">
+                    لغو
+                </a>
+            </div>
+
+        </form>
+    </div>
+</div>
+

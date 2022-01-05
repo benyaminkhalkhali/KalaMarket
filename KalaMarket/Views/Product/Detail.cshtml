@@ -1,0 +1,595 @@
+﻿@model Tuple<DetailProductVM, List<ProductPriceVM>>
+
+
+@{ List<ValueVM> Value = ViewBag.Propertyvalue;
+    List<ProductGallery> gallery = ViewBag.gallery as List<ProductGallery>;
+}
+
+
+<link rel="stylesheet" href="/CssSite/Css/vendor/noUISlider.min.css">
+<link rel="stylesheet" href="/CssSite/Css/vendor/lightgallery.css">
+
+
+
+<div class="container-main">
+    <div class="d-block">
+        <div class="page-content page-row">
+            <div class="main-row">
+                <div id="breadcrumb">
+                    <i class="mdi mdi-home"></i>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">خانه</a></li>
+                            <li class="breadcrumb-item"><a href="">@Model.Item1.CategoryName</a></li>
+
+                            <li class="breadcrumb-item active" aria-current="page">
+                                @Model.Item1.ProductFaTitle
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-lg">
+                    <div class="product type-product">
+                        <div class="col-lg-5 col-xs-12 pr d-block" style="padding: 0;">
+                            <section class="product-gallery">
+                                <div class="gallery">
+                                    <div class="gallery-item">
+                                        <div>
+                                            <ul class="gallery-actions">
+                                                <li>
+                                                    <a href="#" class="btn-option AddFaviorate add-product-wishes faviorate">
+                                                        <i class="mdi mdi-heart-outline"></i>
+                                                        <span>محبوب</span>
+                                                    </a>
+                                                </li>
+                                                <li class="Three-dimensional">
+
+                                                    <div class="modal fade" id="more-product" tabindex="-1"
+                                                         role="dialog" aria-labelledby="exampleModalCenterTitle"
+                                                         aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered more-product"
+                                                             role="document">
+
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="Three-dimensional">
+                                                    <a href="/Compare/@Model.Item1.ProductId"
+                                                       class="btn-option btn-compare">
+                                                        <i class="mdi mdi-compare"></i>
+                                                        <span>مقایسه</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="gallery-item">
+                                        <div class="gallery-img">
+                                            <a href="#">
+                                                <img class="zoom-img" id="img-product-zoom"
+                                                     src="/CssSite/ImageSite/@Model.Item1.ProductImage"
+                                                     data-zoom-image="/CssSite/ImageSite/@Model.Item1.ProductImage"
+                                                     width="411" />
+                                                <div id="gallery_01f" style="width:420px;float:right;">
+                                            </a>
+                                            @if (gallery == null)
+                                            {
+
+                                            }
+                                            else
+                                            {
+                                                <ul class="gallery-items owl-carousel owl-theme" id="gallery-slider">
+                                                    @foreach (var item in gallery)
+                                                    {
+                                                        <li class="item">
+                                                            <a href="#" class="elevatezoom-gallery active" data-update=""
+                                                               data-image="/CssSite/ImageSite/@item.GalleryImage"
+                                                               data-zoom-image="/CssSite/ImageSite/@item.GalleryImage">
+                                                                <img src="/CssSite/ImageSite/@item.GalleryImage" width="100" />
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        </section>
+                    </div>
+                    <div class="col-lg-7 col-xs-12 pl mt-5 d-block">
+                        <section class="product-info">
+                            <div class="product-headline">
+                                <h1 class="product-title">
+                                    @Model.Item1.ProductFaTitle
+                                </h1>
+                                <div class="product-guaranteed text-success">
+                                    @Model.Item1.ProductSell
+                                    <span>فروش موفق</span>
+                                </div>
+                            </div>
+                            <div class="product-attributes">
+                                <div class="product-config">
+                                    <span class="product-title-en">
+                                        @Model.Item1.ProductEnTitle
+                                    </span>
+                                    <div class="product-rate">
+                                        @for (int i = 1; i < Model.Item1.ProductStar; i++)
+                                        {
+                                            <i class="fa fa-star active"></i>
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-config-wrapper">
+                                <div class="product-directory">
+                                    <ul>
+                                        <li>
+                                            <span>
+                                                <i class="fa fa-archive"></i> دسته:
+                                            </span>
+                                            <a href="" class="product-link product-cat-title">@Model.Item1.CategoryName</a>
+
+                                        </li>
+                                        <li>
+                                            <span>
+                                                <i class="fa fa-tags"></i> برچسب:
+                                            </span>
+                                            @Model.Item1.ProductTag
+                                        </li>
+                                        <li>
+                                            <span>
+                                                برند:
+                                            </span>
+                                            <a href="" class="product-link product-tag-title">@Model.Item1.ProductBrand</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col=lg-6 col-md-6 col-xs-12 pr">
+                                    <div class="product-variants">
+                                        <span>رنگ بندی: </span>
+                                        <ul class="js-product-variants">
+                                            @{
+                                                int check = 0;
+                                            }
+                                            @foreach (var item in Model.Item2.GroupBy(c => c.ColorCode))
+                                            {
+                                                <li class="ui-variant Code" data-code="@item.Key">
+                                                    <label for="#" class="ui-variant-color">
+                                                        <span class="ui-variant-shape"
+                                                              style="background-color:@item.Key"></span>
+                                                        <input type="radio" value="4" name="color" id="variant"
+                                                               class="js-variant-selector" @(check == 0 ? "checked" : "")>
+                                                        <span class="ui-variant-check"></span>
+                                                    </label>
+                                                </li>
+                                                check++;
+                                            }
+
+
+                                        </ul>
+                                    </div>
+                                    <div class="product-params pt-3">
+                                        <ul data-title="ویژگی‌های محصول">
+                                            @foreach (var item in Value)
+                                            {
+                                                <li>
+                                                    <span> @item.PropName: </span>
+                                                    <span>@item.Value</span>
+                                                </li>
+                                            }
+
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col=lg-6 col-md-6 col-xs-12 pr">
+                                    <div class="product-seller-info">
+                                        <div class="seller-info-changable">
+                                            <div class="product-seller-row guarantee">
+                                                <span class="title"> گارانتی:</span>
+                                                <a href="#" class="product-name gurantee"></a>
+                                            </div>
+                                            <div class="product-seller-row price">
+                                                <span class="title"> قیمت:</span>
+                                                <div class="product-name">
+                                                    <del class="amount  sepcial">
+
+                                                    </del>
+                                                    <span class="amount MainPrice">
+
+                                                        <span>تومان</span>
+                                                    </span>
+
+                                                </div>
+
+
+
+                                                <div class="product-seller-row guarantee">
+                                                    <span class="title mt-3"> تعداد:</span>
+                                                    <div class="quantity pl">
+                                                        <select class="form-control" id="count">
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="product-seller-row add-to-cart">
+                                                    @if (Model.Item2.Count() > 0)
+                                                    {
+                                                        <a href="#" class="btn-add-to-cart btn btn-primary addcart">
+                                                            <span class="btn-add-to-cart-txt">افزودن به سبد خرید</span>
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="#" class="btn-add-to-cart btn btn-primary ">
+                                                            <span class="btn-add-to-cart-txt">ناموجود می باشد</span>
+                                                        </a>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </section>
+                    </div>
+                    <div class="product-usp">
+                        <div class="product-feature">
+                            <div class="product-feature-col">
+                                <a href="#" class="product-feature-item">
+                                    <img src="/CssSite/ImageSite/page-single-product/delivery.svg">
+                                    امکان تحویل
+                                    <br>
+                                    اکسپرس
+                                </a>
+                            </div>
+                            <div class="product-feature-col">
+                                <a href="#" class="product-feature-item">
+                                    <img src="/CssSite/ImageSite/page-single-product/contact-us.svg">
+                                    ۷ روز هفته
+                                    <br>
+                                    ۲۴ ساعته
+                                </a>
+                            </div>
+                            <div class="product-feature-col">
+                                <a href="#" class="product-feature-item">
+                                    <img src="/CssSite/ImageSite/page-single-product/payment-terms.svg">
+                                    امکان
+                                    <br>
+                                    پرداخت در محل
+                                </a>
+                            </div>
+                            <div class="product-feature-col">
+                                <a href="#" class="product-feature-item">
+                                    <img src="/CssSite/ImageSite/page-single-product/return-policy.svg">
+                                    هفت روز ضمانت بازگشت کالا
+                                </a>
+                            </div>
+                            <div class="product-feature-col">
+                                <a href="#" class="product-feature-item">
+                                    <img src="/CssSite/ImageSite/page-single-product/origin-guarantee.svg">
+                                    ضمانت
+                                    <br>
+                                    اصل بودن کالا
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tabs">
+            <div class="tab-box">
+                <ul class="tab nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="Review-tab" data-toggle="tab" href="#Review" role="tab"
+                           aria-controls="Review" aria-selected="true">
+                            <i class="mdi mdi-glasses"></i>
+                            نقد و بررسی
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="Specifications-tab" data-toggle="tab" href="#Specifications"
+                           role="tab" aria-controls="Specifications" aria-selected="false">
+                            <i class="mdi mdi-format-list-checks"></i>
+                            مشخصات
+                        </a>
+                    </li>
+                    @*<li class="nav-item">
+                        <a class="nav-link" id="User-comments-tab" data-toggle="tab" href="#User-comments"
+                           role="tab" aria-controls="User-comments" aria-selected="false">
+                            <i class="mdi mdi-comment-text-multiple-outline"></i>
+                            نظرات کاربران
+                        </a>
+                    </li>*@
+                    <li class="nav-item">
+                        <a class="nav-link" id="question-and-answer-tab" data-toggle="tab"
+                           href="#question-and-answer" role="tab" aria-controls="question-and-answer"
+                           aria-selected="false">
+                            <i class="mdi mdi-comment-question-outline"></i>
+                            نظرات کاربران
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg">
+                <div class="tabs-content">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="Review" role="tabpanel"
+                             aria-labelledby="Review-tab">
+
+                        </div>
+                        <div class="tab-pane fade" id="Specifications" role="tabpanel"
+                             aria-labelledby="Specifications-tab">
+
+
+
+
+                        </div>
+                        <div class="tab-pane fade" id="User-comments" role="tabpanel"
+                             aria-labelledby="User-comments-tab">
+
+
+
+
+                        </div>
+                        <div class="tab-pane fade" id="question-and-answer" role="tabpanel"
+                             aria-labelledby="question-and-answer-tab">
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section SCripts{
+    <!-- plugin----------------------------------------------------->
+    <script src="~/CssSite/Js/vendor/owl.carousel.min.js"></script>
+    <script src="~/CssSite/Js/vendor/lightgallery-all.js"></script>
+    <script src="~/CssSite/Js/vendor/jquery.ez-plus.js"></script>
+
+    <script>
+
+        function GetPrice(Code) {
+        var price = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Item2));
+
+            var temp = [];
+
+            $.each(price, function (index, item) {
+
+                if (item.ColorCode == Code) {
+                    temp.push(item);
+                }
+
+            });
+
+            return temp;
+        }
+
+        $(".Code").click(function()  {
+            var Code = $(this).data('code');
+            var ListPrice = GetPrice(Code);
+
+            UpdatePrice(ListPrice[0]);
+        });
+
+        $(".Code").first().click();
+        function UpdatePrice(ListPrice) {
+
+            debugger;
+
+            $(".gurantee").html(ListPrice.GuaranteeName);
+
+            if (ListPrice.MainPrice > ListPrice.SpecialPrice) {
+                $(".sepcial").show();
+                $(".sepcial").html(ListPrice.MainPrice);
+                $(".MainPrice").html(ListPrice.SpecialPrice);
+            }
+            if (ListPrice.SpecialPrice == null) {
+                $(".sepcial").hide();
+                $(".MainPrice").html(ListPrice.MainPrice);
+            }
+            var productcount = Number(ListPrice.Count);
+            var maxordercount = Number(ListPrice.MaxOrderCount);
+            $('.option').remove();
+            for (var i = 1; i <= maxordercount; i++) {
+                if (i <= productcount) {
+                    $("#count").append($("<option class='option'></option>").val(i).html(i));
+                }
+            }
+            $("#count").change(function () {
+                var productcounts = $(this).val();
+                $(".addcart").attr('href', '/AddCart/' + ListPrice.ProductPriceId + '/' + productcounts);
+
+            });
+
+            $(".addcart").attr('href', '/AddCart/' + ListPrice.ProductPriceId + '/' + 1);
+
+        }
+
+    </script>
+
+    <script>
+        $(document).ready(function()  {
+            $("#Review").load("/Product/ShowReview/" +@Model.Item1.ProductId);
+        });
+
+        $("#Specifications-tab").click(function () {
+            $("#Specifications").load("/Product/ShowAllProperty/" +@Model.Item1.ProductId);
+
+        });
+
+        $("#User-comments-tab").click(function()  {
+            $("#User-comments").load("/Product/ShowComment/" +@Model.Item1.ProductId);
+
+        });
+
+        $("#question-and-answer-tab").click(function () {
+            $("#question-and-answer").load("/Product/ShowFaq/" +@Model.Item1.ProductId);
+
+        });
+
+    </script>
+
+    <script>
+
+        $(function(){
+
+            $.ajax({
+                type: "get",
+                url: "/CheckAuthorize",
+                success: function (res) {
+                    if (res) {
+                        ChangeFavourite();
+                    }
+                }
+            });
+        });
+
+        function ChangeFavourite() {
+
+            $.ajax({
+                type: "post",
+                url: "/CheckFavourite",
+                data: { productid:@Model.Item1.ProductId },
+                success: function (e) {
+                    if (e) {
+                        $(".faviorate").addClass("text-danger");
+                    }
+                }
+
+            });
+
+        }
+
+        $(".AddFaviorate").click(function () {
+
+            $.ajax({
+                type: "get",
+                url: "/CheckAuthorize",
+                success: function (res) {
+                    if (res) {
+                        AddorDeleteFavourite();
+                    } else {
+                        window.location.href = "/Account/Login";
+                    }
+                }
+            });
+        });
+
+        function AddorDeleteFavourite() {
+
+            $.ajax({
+                type: "post",
+                url: "/AddorDeleteFavourite",
+                data: { productId:@Model.Item1.ProductId },
+                success: function (e) {
+                    if (e) {
+                        $(".faviorate").removeClass("text-danger");
+                    } else {
+                        $(".faviorate").addClass("text-danger");
+                    }
+                }
+            })
+
+        }
+    </script>
+
+    <script>
+        function Scrolltops() {
+            setTimeout(function () {
+                $('html,body').animate({
+                    scrollTop: $("#submitform").offset.top - 200
+                }, 500)
+            }, 500)
+        };
+
+        function SubmitForm() {
+
+            $("#submitform").submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                var url = form.attr('action');
+
+                $.ajax({
+                    type: 'post',
+                    url: url,
+                    data: form.serialize(),
+                    success: function (res) {
+                        if (res > 0) {
+                            alert("success");
+                            $("#text").val('');
+                        } else {
+                            alert("failed")
+                        }
+                    }
+
+                });
+
+            });
+
+        }
+
+        $("#question-and-answer").delegate('.addAnswer', 'click', function () {
+            Scrolltops();
+            var username = $(this).data('username');
+            var qustionid = $(this).data('qustionid');
+            $("#hidden").show();
+
+            if (username === " ") {
+                username = "کاربر کالا مارکت";
+            }
+            $("#qustionid").val(qustionid);
+            $("#username").text(username);
+
+            $("#cancell").click(function () {
+                $("#hidden").hide();
+                $("#qustionid").val('');
+
+            });
+
+        });
+
+    </script>
+
+    <script>
+
+        $(".addcart").click(function (e) {
+            e.preventDefault();
+
+            var productpriceid = $(".addcart").attr('href');
+            $.ajax({
+                type: "post",
+                url: productpriceid,
+                success: function (e) {
+                    if (e == 1) {
+
+                        setTimeout(function () { window.location = '/account/login' }, 50)
+                    }
+                    if (e === 3) {
+                        alert("شما حداکثر این کالارا در سبد خرید خود داری.")
+                    } else if (e == 2) {
+                        showbasket;
+                        alert("کالا با موفقیت به سبد خرید اضافه گردید.")
+                    }
+                }, error: function (e) {
+                    alert(e)
+                }
+
+            });
+
+        })
+
+
+    </script>
+
+
+}

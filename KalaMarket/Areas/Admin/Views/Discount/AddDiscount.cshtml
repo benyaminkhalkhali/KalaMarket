@@ -1,0 +1,67 @@
+﻿@model KalaMarket.DataLayer.Entities.Discount.Discount
+@{
+    ViewData["Title"] = "AddDiscount";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-12 mt-4 p-3">
+    <div class="card-box">
+
+
+
+        <form asp-action="AddDiscount" method="post" style="margin-top:5%;">
+            <div class="form-group">
+                <label asp-for="DiscountCode" for="emailAddress">کدتخفیف</label>
+                <input asp-for="DiscountCode" type="text" parsley-trigger="change" placeholder="کدتخفیف را وارد نمایید " class="form-control" id="emailAddress" data-parsley-id="6">
+                <span asp-validation-for="DiscountCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DiscountPercent" for="emailAddress">درصد تخفیف</label>
+                <input asp-for="DiscountPercent" type="text" parsley-trigger="change" placeholder="درصد تخفیف را وارد نمایید " class="form-control" id="emailAddress" data-parsley-id="6">
+                <span asp-validation-for="DiscountPercent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UsableCount" for="emailAddress">حداکثر تعداد استفاده برای کاربران</label>
+                <input asp-for="UsableCount" type="text" parsley-trigger="change" placeholder="حداکثر تعداد استفاده برای کاربران را وارد نمایید " class="form-control" id="emailAddress" data-parsley-id="6">
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" for="emailAddress">تاریخ شروع کد تخفیف</label>
+                <input asp-for="StartDate" type="text" parsley-trigger="change" class="form-control" placeholder="تاریخ شروع کد تخفیف را وارد نمایید " id="datepicker" data-parsley-id="6">
+                
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" for="emailphone">تاریخ اتمام کدتخفیف</label>
+                <input asp-for="EndDate" type="text" parsley-trigger="change" class="form-control" placeholder="تاریخ اتمام کدتخفیف را وارد نمایید " id="datepicker2" data-parsley-id="6">
+
+            </div>
+            
+            <div class="form-group text-right m-b-0">
+                <button class="btn btn-success waves-effect waves-light" type="submit">
+                    ثبت اطلاعات
+                </button>
+                <a asp-action="showalldiscount" class="btn btn-danger waves-effect waves-light m-l-5">
+                    لغو
+                </a>
+            </div>
+
+        </form>
+    </div>
+</div>
+@section Scripts{
+
+
+    <script type="text/javascript">
+        $(function () {
+            // حالت پیشفرض
+            $('#datepicker').datepicker();
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            // حالت پیشفرض
+            $('#datepicker2').datepicker();
+        });
+    </script>
+}
+

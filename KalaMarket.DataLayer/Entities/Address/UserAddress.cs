@@ -1,0 +1,51 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace KalaMarket.DataLayer.Entities.Address
+{
+    public class UserAddress
+    {
+        [Key]
+        public int AddressId { get; set; }
+
+
+        [Display(Name = "تلفن همراه")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MinLength(11, ErrorMessage = "تلفن همراه نمی تواند کمتر از 11 کاراکتر داشته باشد")]
+        [MaxLength(11, ErrorMessage = "تلفن همراه نمی تواند بیشتر از 11 کاراکتر داشته باشد")]
+        public string PhoneNumber { get; set; }
+
+
+        [Display(Name = "کدپستی")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public int PostalCode { get; set; }
+
+        [Display(Name = "آدرس کامل")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MinLength(20, ErrorMessage = "آدرس کامل نمی تواند کمتر از 20 کاراکتر داشته باشد")]
+        [MaxLength(400, ErrorMessage = "آدرس کامل نمی تواند بیشتر از 400 کاراکتر داشته باشد")]
+        public string FullAddress { get; set; }
+
+        [Display(Name = "نام استان")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public string Province { get; set; }
+
+        [Display(Name = "نام شهر")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public string City { get; set; }
+        public bool IsDelete { get; set; }
+
+        public int UserId { get; set; }
+
+        #region relation
+ 
+        [ForeignKey(nameof(UserId))]
+        public User user { get; set; }
+        #endregion
+    }
+}

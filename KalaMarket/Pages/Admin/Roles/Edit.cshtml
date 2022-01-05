@@ -1,0 +1,61 @@
+﻿@page "{id}"
+@model KalaMarket.Pages.Admin.Roles.EditModel
+@{
+    ViewData["Title"] = "لیست نقش ها";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form enctype="multipart/form-data" method="post">
+
+    <input type="hidden" asp-for="model.RoleId" />
+
+    <div class="col-md-8 col-sm-8 col-xs-8">
+
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>
+                    ویرایش نقش
+
+                </h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="row">
+
+                    @if (!string.IsNullOrEmpty(Model.message))
+                    {
+                        <p class="alert alert-info">@Model.message</p>
+                    }
+
+                    <div class="item form-group">
+                        <label class="control-label col-md-7  ">
+                            عنوان نقش :
+                        </label>
+                        <div class="col-md-8">
+                            <input asp-for="model.RoleTitle" required="" style="text-align:right" class="form-control  " placeholder="Please Enter Role Title" type="text">
+                            <span asp-validation-for="model.RoleTitle" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+
+                    <hr class="col-md-12" />
+                    <div class="item form-group">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-5">
+
+                            <input type="submit" class="btn btn-success" value="ثبت" />
+                            <a asp-page="Index" class="btn btn-danger">انصراف</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

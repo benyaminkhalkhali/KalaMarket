@@ -1,0 +1,291 @@
+﻿@page
+@model KalaMarket.Pages.Admin.Comments.IndexModel
+@{
+    ViewData["Title"] = "لیست نقش ها";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using KalaMarket.Core.ExtensionMethod
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>
+
+                نظرات
+                @if (Model.Checked == null)
+                {
+                    <a href="/Admin/Comments/Index" class="btn btn-primary">همه</a>
+
+                }
+                else
+                {
+                    <a href="/Admin/Comments/Index" class="btn btn-default">همه</a>
+                }
+
+                <a href="/Admin/Comments/Index?Checked=@true" class="btn @((Model.Checked==true)?"btn-primary":"btn-default")">تایید شده</a>
+                <a href="/Admin/Comments/Index?Checked=@false" class="btn @((Model.Checked==false)?"btn-warning":"btn-default")">تایید نشده</a>
+
+                <a href="/Admin/Comments/DeletedComments" class="btn btn-danger">زباله دان</a>
+            </h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+
+
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+
+                <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+
+
+                    <div class="row">
+                        <div class="col-sm-12">
+
+
+                            <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action dataTable no-footer" role="grid" aria-describedby="datatable-checkbox_info">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            ردیف
+                                        </th>
+                                        <th>
+                                            کاربر
+                                        </th>
+                                        <th>
+                                            محصول
+                                        </th>
+                                        <th>
+                                            تاریخ
+                                        </th>
+                                        <th>
+                                            عنوان
+                                        </th>
+                                        <th>
+                                            چکیده
+                                        </th>
+
+                                        <th>
+                                            امتیاز
+                                        </th>
+
+                                        <th>
+                                            عملیات
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int Radif = 1;
+                                    }
+                                    @foreach (var item in Model.model.Comments)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <span>@(Radif++)</span>
+                                            </td>
+                                            <td>
+                                                <a href="/Admin/Users/EditUser/@item.UserId">@item.user.Email</a>
+                                            </td>
+                                            <td>
+                                                <a href="/Product/Detail/@item.product.ProductEnTitle">@item.product.ProductFaTitle</a>
+                                            </td>
+                                            <td>
+                                                @item.CreateDate.ToShamsi()
+                                            </td>
+                                            <td>
+                                                @item.CommentTitle
+                                            </td>
+                                            <td>
+                                                @if (item.CommentDescription.Length > 50)
+                                                {
+                                                    <span>@item.CommentDescription.Substring(0, 50) ...</span>
+                                                }
+                                                else
+                                                {
+                                                    @item.CommentDescription
+                                                }
+                                            </td>
+                                            <td>
+                                                @item.Score
+                                            </td>
+                                            <td>
+                                                @if (item.IsActive == false)
+                                                {
+                                                    <a ThisId="@item.CommentId" ThisName="@item.CommentTitle" class="btnOK"><i class="fa fa-check"></i></a>
+                                                }
+                                                else
+                                                {
+                                                    <a ThisId="@item.CommentId" ThisName="@item.CommentTitle" class="btnNOK"><i class="fa fa-stop"></i></a>
+                                                }
+                                                <a href="/Admin/Comments/Details/@item.CommentId" target="_blank"><i class="fa fa-pencil"></i></a>
+                                                <a ThisId="@item.CommentId" ThisName="@item.CommentTitle" class="btnDelete"><i class="fa fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-sm-5">
+                            <div class="dataTables_info" id="datatable-checkbox_info" role="status" aria-live="polite">
+                                تعداد کل رکورد ها : @Model.model.Count
+                                <br />
+                                تعداد نمایش در هر صفحه : @ViewData["Take"]
+
+                            </div>
+                        </div>
+                        <div class="col-sm-7">
+
+                            <div class="btn-group">
+
+                                @if (Model.model.CurrentPage > 1)
+                                {
+                                    <a href="/Admin/Comments/Index?PageId=1" class="btn btn-default">
+                                        اولین
+                                    </a>
+                                    <a href="/Admin/Comments/Index?PageId=@(Model.model.CurrentPage-1)" class="btn btn-default">
+                                        قبلی
+                                    </a>
+
+                                }
+
+                                @for (int i = 1; i <= Model.model.PageCount; i++)
+                                {
+                                    <a href="/Admin/Comments/Index?PageId=@i" class="@((i==Model.model.CurrentPage)?"btn btn-info":"btn btn-default")">
+                                        @i
+                                    </a>
+                                }
+
+                                @if (Model.model.CurrentPage < Model.model.PageCount)
+                                {
+                                    <a href="/Admin/Comments/Index?PageId=@(Model.model.CurrentPage+1)" class="btn btn-default">
+                                        بعدی
+                                    </a>
+                                    <a href="/Admin/Comments/Index?PageId=@Model.model.PageCount" class="btn btn-default">
+                                        آخرین
+                                    </a>
+                                }
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+
+
+            $('.btnOK').click(function () {
+
+            var ThisName = $(this).attr("ThisName");
+            var ThisId = $(this).attr("ThisId");
+
+            var GetResult = confirm("آیا نظر " + ThisName + " را تایید می‌کنید؟ ");
+
+            var action = { url: '@Url.Action("OkComment", "Product",new { Area=""})' };
+
+            var model = { 'CommentId': ThisId };
+
+            if (GetResult == true) {
+                $.ajax({
+                    type: "POST",
+                    url: action.url,
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(model)
+                }).done(function (result) {
+                    if (result != "OK") {
+                        console.log(result);
+                        alert("عملیات انجام نشد لطفا مجدد تلاش کنید");
+                    }
+                    else {
+                        alert("نظر " + ThisName + " با موفقیت تایید شد!");
+                        location.reload();
+                    }
+                })
+            }
+
+            });
+
+            $('.btnNOK').click(function () {
+
+            var ThisName = $(this).attr("ThisName");
+            var ThisId = $(this).attr("ThisId");
+
+            var GetResult = confirm("آیا نظر " + ThisName + " را عدم تایید می‌کنید؟ ");
+
+            var action = { url: '@Url.Action("NotOkComment", "Product",new { Area=""})' };
+
+            var model = { 'CommentId': ThisId };
+
+            if (GetResult == true) {
+                $.ajax({
+                    type: "POST",
+                    url: action.url,
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(model)
+                }).done(function (result) {
+                    if (result != "OK") {
+                        console.log(result);
+                        alert("عملیات انجام نشد لطفا مجدد تلاش کنید");
+                    }
+                    else {
+                        alert("نظر " + ThisName + " با موفقیت عدم تایید شد!");
+                        location.reload();
+                    }
+                })
+            }
+
+            });
+
+            $('.btnDelete').click(function () {
+
+            var ThisName = $(this).attr("ThisName");
+            var ThisId = $(this).attr("ThisId");
+
+            var GetResult = confirm("آیا نظر " + ThisName + " را حذف می‌کنید؟ ");
+
+            var action = { url: '@Url.Action("DeleteComment", "Delete",new { Area=""})' };
+
+            var model = { 'CommentId': ThisId };
+
+            if (GetResult == true) {
+                $.ajax({
+                    type: "POST",
+                    url: action.url,
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(model)
+                }).done(function (result) {
+                    if (result != "OK") {
+                        console.log(result);
+                        alert("عملیات انجام نشد لطفا مجدد تلاش کنید");
+                    }
+                    else {
+                        alert("نظر " + ThisName + " با موفقیت حذف شد!");
+                        location.reload();
+                    }
+                })
+            }
+
+            });
+    
+
+    </script>
+}

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<ValueVM>
+@{
+    Layout = null;
+}
+
+<article>
+    <h2 class="params-headline">
+        مشخصات فنی
+    </h2>
+    <section>
+        <ul class="params-list">
+            @foreach (var item in Model)
+            {
+                <li class="params-list-item">
+                    <div class="params-list-key">
+                        <span class="block">@item.PropName</span>
+                    </div>
+                    <div class="params-list-value">
+                        <span class="block">
+                            @item.Value
+                        </span>
+                    </div>
+                </li>
+            }
+
+
+        </ul>
+    </section>
+
+</article>

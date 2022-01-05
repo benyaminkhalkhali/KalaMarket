@@ -1,0 +1,146 @@
+﻿@page "{id}"
+@model KalaMarket.Pages.Admin.Users.EditUserModel
+@{
+    ViewData["Title"] = "ویرایش کاربر";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<head>
+    <script src="~/CssSite/Js/vendor/jquery-3.2.1.min.js"></script>
+</head>
+
+
+
+<div class="col-lg-12 mt-4 p-3">
+    <div class="card-box">
+        <form method="post">
+            <div class="col-md-8 col-sm-8 col-xs-8 ">
+
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>
+                            افزودن کاربر جدید
+
+                        </h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <a class="collapse-link"></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+
+                            <input type="hidden" asp-for="EditUser.UserId"/>
+                            @if (!string.IsNullOrEmpty(Model.message))
+                            {
+                                <p class="alert alert-info">@Model.message</p>
+                            }
+
+                            <div class="item form-group">
+                                <label class="control-label col-md-10  ">
+                                    نام و نام خانوادگی :
+                                </label>
+                                <div class="col-md-8">
+                                    <input asp-for="EditUser.UserNameAndFamily" required="" class="form-control  " placeholder="لطفا نام را وارد کنید" type="text">
+
+                                    <span asp-validation-for="EditUser.UserNameAndFamily" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <br />
+                            
+                            <br />
+                            <div class="item form-group">
+                                <label class="control-label col-md-10  ">
+                                    ایمیل :
+                                </label>
+                                <div class="col-md-8">
+                                    <input asp-for="EditUser.Email" required="" class="form-control  " placeholder="لطفا ایمیل را وارد کنید" type="email">
+
+                                    <span asp-validation-for="EditUser.Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="item form-group">
+                                <label class="control-label col-md-10  ">
+                                    شماره موبایل :
+                                </label>
+                                <div class="col-md-8">
+                                    <input asp-for="EditUser.PhoneNumber" required="" class="form-control  " placeholder="لطفا شماره موبایل را وارد کنید" type="number">
+
+                                    <span asp-validation-for="EditUser.PhoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="item form-group">
+                                <label class="control-label col-md-10  ">
+                                    کلمه عبور :
+                                </label>
+                                <div class="col-md-8">
+                                    <input asp-for="EditUser.Password" class="form-control  " placeholder="لطفا کلمه عبور را وارد کنید" type="password">
+
+                                    <span asp-validation-for="EditUser.Password" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="item form-group">
+                                <label class="control-label col-md-10  ">
+                                    تکرار کلمه عبور :
+                                </label>
+                                <div class="col-md-8">
+                                    <input asp-for="EditUser.ConfirmPassword" class="form-control" placeholder="لطفا تکرار کلمه عبور را وارد کنید" type="password">
+
+                                    <span asp-validation-for="EditUser.ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <br />
+
+                            <div class=" item form-group">
+                                <label class="control-label col-md-10  ">
+                                    سطح دسترسی :
+                                </label>
+                                <div class="col-md-8 ">
+                                    <select name="selectedRoles" class="select2_multiple form-control" multiple="multiple">
+                                        @{
+                                            List<KalaMarket.DataLayer.Entities.Role.Role> Roles = ViewData["Roles"] as List<KalaMarket.DataLayer.Entities.Role.Role>;
+                                        }
+                                        @foreach (var role in Roles)
+                                        {
+                                            <option selected="@((Model.EditUser.UserRolesID.Any(c => c == role.RoleId)))" 
+                                                    value="@role.RoleId">@role.RoleTitle</option>
+                                        }
+                                        
+
+                                    </select>
+                                    <span>برای انتخاب چندگانه از کلید Ctrl استفاده نمایید</span>
+
+                                </div>
+
+                            </div>
+                            <br />
+                            <br />
+                            <div class="item  form-group">
+
+                                <div class="col-md-12 col-sm-12 col-xs-12 checkbox">
+                                    <input asp-for="EditUser.IsActive" type="checkbox" class="js-switch" checked="" data-switchery="true" style="display: none;">
+                                    &nbsp;
+                                    <label asp-for="EditUser.IsActive">فعال / غیر فعال</label>
+                                </div>
+                            </div>
+                            <hr class="col-md-12" />
+                            <div class="item form-group">
+                                <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-5">
+
+                                    <input type="submit" class="btn btn-success" value="ثبت" />
+                                    <a asp-page="Index" class="btn btn-danger">انصراف</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

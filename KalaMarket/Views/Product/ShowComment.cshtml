@@ -1,0 +1,130 @@
+﻿@using KalaMarket.Core.ExtensionMethod
+@model KalaMarket.DataLayer.Entities.ProductEntities.FAQ.Comment
+@{
+    Layout = null;
+    List<KalaMarket.DataLayer.Entities.ProductEntities.FAQ.Comment> Comments = ViewBag.comments as List<KalaMarket.DataLayer.Entities.ProductEntities.FAQ.Comment>;
+}
+
+@inject KalaMarket.Core.Service.IService.IProductService PS;
+
+
+<div class="comments">
+    <div id="tab-review" class="tab-pane">
+
+        <div id="review">
+            <div>
+                <div id="NewComment">
+
+                </div>
+
+                @foreach (var com in Comments)
+                {
+                    <table class="table table-striped table-bordered">
+                        <tbody>
+                            <tr>
+                                <td style="width: 50%;"><strong><span>@(com.user.FirstAndLastName)</span></strong></td>
+                                <td class="text-right"><span>@com.CreateDate.ToShamsi()</span></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <p>@com.CommentDescription</p>
+                                    <div class="rating">
+                                        @for (int i = 1; i <= com.Score; i++)
+                                        {
+                                            <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                        }
+                                        @for (int j = 0; j < 5 - com.Score; j++)
+                                        {
+                                            <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+
+            </div>
+            <div class="text-right"></div>
+        </div>
+        <h2>نظر خود را با ما به اشتراک بزارید</h2>
+
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form asp-area="" asp-controller="Product" asp-action="AddComment"
+                  data-ajax="true"
+                  data-ajax-mode="Replace"
+                  data-ajax-update="#NewComment"
+                  data-ajax-success="AddCommentSuccess()">
+
+                <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                <div class="form-group required">
+                    <div class="col-sm-12">
+                        <label for="input-name" class="control-label">عنوان</label>
+                        <input type="text" class="form-control" id="CommentTitle" value="" name="CommentTitle">
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <div class="col-sm-12">
+                        <label for="input-review" class="control-label">دیدگاه شما</label>
+                        <textarea class="form-control" id="CommentDescription" rows="5" name="Description"></textarea>
+                        <div class="help-block"><span class="text-danger">توجه :</span> HTML بازگردانی نخواهد شد!</div>
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <div class="col-sm-12">
+                        <label class="control-label">رتبه</label>
+                        &nbsp;&nbsp;&nbsp; بد&nbsp;
+                        <input id="rdoScore" type="radio" value="1" name="Score">
+                        &nbsp;
+                        <input id="rdoScore" type="radio" value="2" name="Score">
+                        &nbsp;
+                        <input id="rdoScore" type="radio" value="3" name="Score">
+                        &nbsp;
+                        <input id="rdoScore" type="radio" value="4" name="Score">
+                        &nbsp;
+                        <input id="rdoScore" type="radio" value="5" name="Score">
+                        &nbsp;خوب
+                    </div>
+                </div>
+                <div class="buttons">
+                    <div class="pull-right">
+                        <input type="submit" class="btn btn-primary" value="ارسال" />
+                    </div>
+                </div>
+            </form>
+
+
+        }
+        else
+        {
+            <p class="alert alert-warning text-center">
+                برای ثبت نظر باید ابتدا وارد حساب کاربری خود شوید
+                <br />
+                <a href="/Login?ReturnUrl=/Product/Detail/@Model.ProductId/@Model.product.ProductFaTitle.Replace(" ","-")" class="btn btn-dark">ورود</a>
+                <a href="/Register" class="btn btn-default">ثبت نام</a>
+            </p>
+        }
+
+    </div>
+</div>
+
+
+<script src="~/CssSite/Js/jquery.unobtrusive-ajax.js"></script>
+
+@section SCripts{
+
+    <script>
+        function AddCommentSuccess() {
+            toastr.options.progressBar = true;
+            toastr.success("نظر شما با موفقیت ثبت شد");
+
+            $('#CommentTitle').val("");
+            $('#CommentDescription').val("");
+            $('#rdoScore').val('');
+        };
+    </script>
+
+}
+

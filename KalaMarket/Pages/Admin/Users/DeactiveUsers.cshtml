@@ -1,0 +1,229 @@
+﻿@page
+@model KalaMarket.Pages.Admin.Users.DeactiveUsersModel
+@{
+    ViewData["Title"] = "کاربران حذف شده";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@inject KalaMarket.Core.Service.IService.IRoleService _roleService;
+@inject KalaMarket.Core.Service.IService.IUserService _userService;
+
+@using KalaMarket.Core.ExtensionMethod
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>
+
+                لیست کاربران
+
+            </h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+
+
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+
+                <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                    <div class="row">
+                        <form>
+                            <div class="col-sm-3">
+                                <div class="dataTables_length" id="datatable-checkbox_length">
+                                    <label>
+                                        نمایش
+                                        <select name="Take" aria-controls="datatable-checkbox" class="form-control input-sm">
+                                            <option value="">پیش فرض</option>
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="50">50</option>
+                                        </select> کاربر
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <input type="text" name="FilterByName" placeholder="جستجو بر اساس نام" value="@ViewData["FilterByName"]" class="form-control" />
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" name="FilterByMobile" placeholder="جستجو بر اساس موبایل" value="@ViewData["FilterByMobile"]" class="form-control" />
+
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" name="FilterByEmail" placeholder="جستجو بر اساس ایمیل" value="@ViewData["FilterByEmail"]" class="form-control" />
+
+
+                            </div>
+                            <div class="col-sm-2">
+
+
+                                <input type="submit" value="فیلتر کن" class="btn btn-success" />
+                                <a href="/Admin/Users" class="btn btn-danger">حذف فیلتر</a>
+                            </div>
+
+                        </form>
+
+
+                    </div>
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-7"></div>
+                            <a href="/Admin/Users" class="btn btn-default">کاربران منتشر شده</a>
+                            <a href="/Admin/Users/DeletedUsers" class="btn btn-default">کاربران حذف شده (@_userService.CountofDeletedUsers())</a>
+                            <a href="/Admin/Users/DeactiveUsers" class="btn btn-warning">کاربران غیرفعال (@_userService.CountofDeletedUsers())</a>
+
+                            <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action dataTable no-footer" role="grid" aria-describedby="datatable-checkbox_info">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            ردیف
+                                        </th>
+                                        <th>
+                                            نام و نام خانوادگی
+                                        </th>
+                                        <th>
+                                            موبایل
+                                        </th>
+                                        <th>
+                                            ایمیل
+                                        </th>
+                                        <th>
+                                            تاریخ عضویت
+                                        </th>
+                                        <th>
+                                            وضعیت
+                                        </th>
+                                        <th>
+                                            نقش های کاربر
+                                        </th>
+                                        <th>
+                                            عملیات
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int radif = 1;
+                                    }
+                                    @foreach (var item in Model.model.users)
+                                    {
+                                        <tr>
+                                            <td>@(radif++)</td>
+
+                                            <td>
+                                                @item.FirstAndLastName
+                                            </td>
+                                            <td>
+                                                @item.PhoneNumber
+                                            </td>
+                                            <td>
+                                                @item.Email
+                                            </td>
+                                            <td>
+                                                @(Convert.ToDateTime(item.CreateAccount).ToShamsi())
+                                            </td>
+                                            <td>
+                                                @if (item.IsActive == true)
+                                                {
+                                                    <span class="text-success"><b>فعال</b></span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-warning"><b>غیر فعال</b></span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (_roleService.GetUserRoles(item.Email).Count <= 0)
+                                                {
+                                                    <span class="text-danger">نقش ندارد</span>
+                                                }
+                                                else
+                                                {
+                                                    @foreach (var role in _roleService.GetUserRoles(item.Email))
+                                                    {
+                                                        <span>@role</span>
+                                                    }
+                                                }
+
+                                            </td>
+
+                                            <td>
+                                                <b class="text-danger">X</b>
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-sm-5">
+                            <div class="dataTables_info" id="datatable-checkbox_info" role="status" aria-live="polite">
+                                تعداد کل رکورد ها : @Model.model.Count
+                                <br />
+                                تعداد نمایش در هر صفحه : @ViewData["Take"]
+
+                            </div>
+                        </div>
+                        <div class="col-sm-7">
+
+                            <div class="btn-group">
+
+                                @if (Model.model.CurrentPage > 1)
+                                {
+                                    <a href="/Admin/Users/DeactiveUsers?PageId=1&Take=@ViewData["Take"]&FilterByName=@ViewData["FilterByName"]"
+                                       class="btn btn-default">
+                                        اولین
+                                    </a>
+                                    <a href="/Admin/Users/DeactiveUsers?PageId=@(Model.model.CurrentPage-1)&Take=@ViewData["Take"]&FilterByName=@ViewData["FilterByName"]"
+                                       class="btn btn-default">
+                                        قبلی
+                                    </a>
+
+                                }
+
+                                @for (int i = 1; i <= Model.model.PageCount; i++)
+                                {
+                                    <a href="/Admin/Users/DeactiveUsers?PageId=@i&Take=@ViewData["Take"]&FilterByName=@ViewData["FilterByName"]"
+                                       class="@((i==Model.model.CurrentPage)?"btn btn-info":"btn btn-default")">
+                                        @i
+                                    </a>
+                                }
+
+                                @if (Model.model.CurrentPage < Model.model.PageCount)
+                                {
+                                    <a href="/Admin/Users/DeactiveUsers?PageId=@(Model.model.CurrentPage+1)&Take=@ViewData["Take"]&FilterByName=@ViewData["FilterByName"]"
+                                       class="btn btn-default">
+                                        بعدی
+                                    </a>
+                                    <a href="/Admin/Users/DeactiveUsers?PageId=@Model.model.PageCount&Take=@ViewData["Take"]&FilterByName=@ViewData["FilterByName"]"
+                                       class="btn btn-default">
+                                        آخرین
+                                    </a>
+                                }
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

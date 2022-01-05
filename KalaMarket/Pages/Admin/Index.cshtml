@@ -1,0 +1,153 @@
+﻿@page
+@model KalaMarket.Pages.Admin.IndexModel
+@{
+    ViewData["Title"] = "داشبورد";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using KalaMarket.Core.ExtensionMethod 
+@inject KalaMarket.Core.Service.IService.ISiteSettingService SS;
+
+
+<div class="row">
+    <br /><br /><br /><br /><br />
+    <div class="container mt-5">
+        <div class="col-lg-2 col-md-6 text-dark">
+            <div class="card-box" style="background-color:lightgray">
+                <h1 class="header-title m-t-0 m-b-30">ثبت نام کاربران</h1>
+
+                <div class="widget-detail-1">
+                    <h5 class="p-t-10 m-b-0">@SS.GetCountOfUsers() نفر</h5>
+                </div>
+            </div>
+        </div><!-- end col -->
+
+        <div class="col-lg-2 col-md-6 text-dark">
+            <div class="card-box" style="background-color:darkturquoise">
+                <h1 class="header-title m-t-0 m-b-30">تعداد کل محصولات</h1>
+
+                <div class="widget-detail-1">
+                    <h5 class="p-t-10 m-b-0">@SS.GetCountOfProducts() عدد</h5>
+                </div>
+            </div>
+        </div><!-- end col -->
+
+        <div class="col-lg-2 col-md-6 text-dark">
+            <div class="card-box" style="background-color:yellow">
+                <h1 class="header-title m-t-0 m-b-30"> تعداد کل سفارشات</h1>
+
+                <div class="widget-detail-1">
+                    <h5 class="p-t-10 m-b-0">@SS.GetCountOfOrders() عدد</h5>
+                </div>
+            </div>
+        </div><!-- end col -->
+
+        <div class="col-lg-2 col-md-6 text-dark">
+            <div class="card-box" style="background-color:violet">
+                <h1 class="header-title m-t-0 m-b-30">کل سفارشات ارسالی</h1>
+
+                <div class="widget-detail-1">
+                    <h5 class="p-t-10 m-b-0">@SS.GetCountOfDeliveries() عدد</h5>
+                </div>
+            </div>
+        </div><!-- end col -->
+
+        <div class="col-lg-2 col-md-6 text-dark">
+            <div class="card-box" style="background-color:tomato">
+                <h1 class="header-title m-t-0 m-b-30">درآمد کل</h1>
+
+                <div class="widget-detail-1">
+                    <h5 class="p-t-10 m-b-0">@SS.GetAllIncome() تومان</h5>
+                </div>
+            </div>
+        </div><!-- end col -->
+
+        <div class="col-lg-2 col-md-6 text-dark">
+            <div class="card-box" style="background-color:lime">
+                <h1 class="header-title m-t-0 m-b-30">درآمد در 30 روز گذشته</h1>
+
+                <div class="widget-detail-1">
+                    <h5 class="p-t-10 m-b-0">@SS.GetIncomeIn30DaysAgo() تومان</h5>
+                </div>
+            </div>
+        </div><!-- end col -->
+
+    </div>
+
+</div>
+
+
+
+
+
+
+<div class="row">
+    <div class="container panel panel-heading">
+        <div class="col-md-6 panel panel-body panel-default">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h5>
+                        سفارشات در انتظار تایید
+                        <span>@(Model.Orders.Count)</span>
+                        <span><a href="/Admin/product/showposted">همه</a></span>
+                    </h5>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    @foreach (var order in Model.Orders)
+                    {
+                        <article class="media event">
+                            <a class="pull-left" href="/Admin/Orders/OrderDetails/@order.CartId">
+                                <p class="text-dark">@order.CreateDate.ToShamsi()</p>
+
+                            </a>
+                            <div class="media-body">
+                                <a class="title" href="#">@order.TotalPrice.ToString("N0") تومان</a>
+                                <p>روش پرداخت : اینترنتی</p>
+                            </div>
+                        </article>
+                    }
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 panel panel-body panel-default">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h5>
+                        پرفروش ترین محصولات
+                        <span><a href="/Admin/Product/showallproducts">همه</a></span>
+                    </h5>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                    @foreach (var pro in Model.Products)
+                    {
+                        <article class="media event">
+                            <p class="pull-left">@pro.ProductCreate.ToShamsi()</p>
+
+
+                            <div class="media-body">
+                                <a class="title" href="/Admin/Products/Edit/@pro.ProductId">
+
+                                    <p class="text-dark">@pro.ProductFaTitle</p>
+
+                                </a>
+                                <p>@((pro.SpecialPrice!=null)?Convert.ToInt32(pro.SpecialPrice).ToString("N0"):pro.MainPrice.ToString("N0")) تومان</p>
+                            </div>
+                        </article>
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+        
+
+        
+    </div>
+

@@ -1,0 +1,60 @@
+﻿@using KalaMarket.Core.ExtensionMethod
+@model InformationAccountVM
+@{
+    Layout = null;
+    string Action = ViewContext.RouteData.Values["Action"].ToString().ToLower();
+}
+
+<div class="sidebar-profile sidebar-navigation">
+    <section class="profile-box">
+        <header class="profile-box-header-inline">
+            <div class="profile-avatar user-avatar profile-img">
+                <img src="~/CssSite/ImageSite/man.png" />
+            </div>
+        </header>
+        <footer class="profile-box-content-footer">
+            <span class="profile-box-nameuser">@Model.FirstAndLastName</span>
+            <span class="profile-box-registery-date">عضویت در سایت :  @Model.DateTime.ToShamsi()</span>
+            <span class="profile-box-phone">ایمیل : @Model.Email</span>
+            <div class="profile-box-tabs">
+                <a href="/Account/Logout" class="profile-box-tab-sign-out"><i class="mdi mdi-logout-variant"></i>خروج از حساب</a>
+            </div>
+        </footer>
+    </section>
+    <section class="profile-box">
+        <ul class="profile-account-navs">
+            <li class="profile-account-nav-item navigation-link-dashboard">
+                <a href="/user/userprofile/index" class="@(Action =="index"?"active":"")">
+                    <i class="mdi mdi-account-outline"></i>
+                    پروفایل
+                </a>
+            </li>
+
+            <li class="profile-account-nav-item navigation-link-dashboard">
+                <a href="/ShowOrder" @(Action =="ShowOrder"?"active":"")">
+                    <i class="mdi mdi-cart"></i>
+                    همه سفارش ها
+                </a>
+            </li>
+
+            <li class="profile-account-nav-item navigation-link-dashboard">
+                <a href="/favourite" class="@(Action =="favourite"?"active":"")">
+                    <i class="mdi mdi-heart"></i>
+                    لیست علاقه مندی
+                </a>
+            </li>
+            <li class="profile-account-nav-item navigation-link-dashboard">
+                <a href="/User/UserProfile/address" class="@(Action =="address"?"active":"")">
+                    <i class="mdi mdi-map-outline"></i>
+                    آدرس ها
+                </a>
+            </li>
+            <li class="profile-account-nav-item navigation-link-dashboard">
+                <a href="/edituser" class="@(Action =="edituser"?"active":"")">
+                    <i class="mdi mdi-tooltip-text-outline"></i>
+                    اطلاعات حساب
+                </a>
+            </li>
+        </ul>
+    </section>
+</div>

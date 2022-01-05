@@ -1,0 +1,87 @@
+﻿
+@model ShowAddressForUserVM
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var informationuser = ViewBag.information as InformationAccountVM;
+}
+
+<head>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <!-- ir-city-select.js -->
+    <script src="https://github.com/KayvanMazaheri/ir-city-select/releases/download/v0.2.0/ir-city-select.min.js"></script>
+</head>
+
+<!-- profile------------------------------->
+<div class="container-main">
+    <div class="d-block">
+        <section class="profile-home">
+            <div class="col-lg">
+                <div class="post-item-profile order-1 d-block">
+                    <div class="col-lg-3 col-md-3 col-xs-12 pr">
+
+                        <partial name="_SidebarUser" model="informationuser" />
+
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-xs-12 pl">
+                        <div class="profile-content">
+                            <div class="profile-stats">
+                                <div class="profile-address">
+                                    <div class="middle-container">
+                                        <form asp-action="UpdateAddress" method="post" class="form-checkout">
+                                            <input type="hidden" asp-for="AddressId" />
+                                            <div class="form-checkout-row">
+                                                
+                                                <label for="fixed-number">شماره تلفن ثابت <abbr class="required" title="ضروری" style="color:red;">*</abbr></label>
+                                                <input asp-for="PhoneNumber" class="input-name-checkout form-control text-left">
+                                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                                
+
+                                                <div class="form-checkout-valid-row ir-select">
+                                                    <label for="province">
+                                                        استان
+                                                        <abbr class="required" title="ضروری" style="color:red;">*</abbr>
+                                                    </label>
+                                                    
+                                                    <select asp-for="ProvinceName" class="ir-province form-control">استان مورد نظر خود را انتخاب کنید</select>
+                                                    <span asp-validation-for="ProvinceName" class="text-danger"></span>
+
+                                                    <label for="city">
+                                                        شهر
+                                                        <abbr class="required" title="ضروری" style="color:red;">*</abbr>
+                                                    </label>
+                                                    
+                                                    <select asp-for="CityName" class="ir-city form-control"></select>
+                                                    <span asp-validation-for="CityName" class="text-danger"></span>
+
+
+                                                </div>
+
+
+                                                <label for="post-code">کد پستی<abbr class="required" title="ضروری" style="color:red;">*</abbr></label>
+                                                <input type="text" asp-for="PostalCode" class="input-name-checkout form-control" placeholder="کد پستی را بدون خط تیره بنویسید">
+                                                <span asp-validation-for="PostalCode" class="text-danger"></span>
+                                                <label for="address">
+                                                    آدرس
+                                                    <abbr class="required" title="ضروری" style="color:red;">*</abbr>
+                                                </label>
+                                                <textarea rows="5" cols="30" asp-for="FullAddress" class="textarea-name-checkout form-control"></textarea>
+                                                <span asp-validation-for="FullAddress" class="text-danger"></span>
+                                                <div class="AR-CR">
+                                                    <button type="submit" class="btn-registrar"> ثبت آدرس</button>
+                                                    <a href="/User/ProfileUser/Address" class="cancel-edit-address" data-dismiss="modal" aria-label="Close">بازگشت</a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<!-- profile------------------------------->

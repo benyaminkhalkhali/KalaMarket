@@ -1,0 +1,249 @@
+﻿@{ 
+    ViewData["Title"] = "خانه";
+    List<SpecialProductVM> specials = ViewBag.specialprice;
+    var random = ViewBag.randomproduct as List<RandomProductVM>;
+    var sliderspecial = specials.OrderByDescending(x => x.EndSpecialPrice)
+        .GroupBy(x => x.ProductId).Select(x => new
+        {
+            x.Key,
+            x.First().MainPrice,
+            x.First().EndSpecialPrice,
+            x.First().ProductFaTitle,
+            x.First().ProductImage,
+            x.First().ProductPriceId,
+            x.First().SpecialPrice,
+            x.First().ValuesList,
+        }).ToList();
+}
+
+<!-- slider-main--------------------------->
+<div class="container-main">
+    <div class="d-block">
+        <div class="col-lg-8 col-xs-12 pr">
+            @await Component.InvokeAsync("showslideruser")
+        </div>
+
+        <!-- slider-amazing------------------------>
+        @*<partial name="_Latest" model="@ViewBag.latest as IEnumerable<KalaMarket.Core.ViewModel.ProductInfosVM>" />*@
+        @await Component.InvokeAsync("sliderforlatest")
+
+
+
+        <div class="col-lg-9 col-md-9 col-xs-12 pl">
+            <div class="content-widget-amazing">
+                <section id="amazing-slider" class="carousel slide carousel-fade card" data-ride="carousel">
+                    <div class="row m-0">
+                        @{
+                            int count = 0;
+                            int active = 0;
+                        }
+                        <ol class="carousel-indicators pr-0 d-flex flex-column col-lg-3">
+                            @foreach (var item in sliderspecial)
+                            {
+
+                                <li class="@(count==0?"active":"")" data-target="#amazing-slider" data-slide-to="@count">
+                                    <span>
+                                        @item.ProductFaTitle
+                                    </span>
+                                </li>
+
+                                count++;
+                            }
+
+
+                        </ol>
+                        <div class="carousel-inner p-0 col-12 col-lg-9">
+                            @foreach (var item in sliderspecial)
+                            {
+                                <div class="carousel-item @(active==0?"active":"")">
+                                    <div class="row m-0">
+                                        <div class="right-col col-5 d-flex align-items-center">
+                                            <a class="w-100 text-center img-link-amazing" href="/Product/Detail/@item.Key">
+                                                <img src="/CssSite/ImageSite/@item.ProductImage"
+                                                     class="img-fluid" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="col-7">
+                                            <div class="discount">
+                                                <span class="discount-percent">
+                                                    @{
+                                                        double round = Math.Round(100 - (Convert.ToDouble(item.SpecialPrice.Value) / item.MainPrice * 100));
+                                                    }
+                                                    @round
+                                                    <i class="fa fa-percent"></i>
+                                                </span>
+                                            </div>
+                                            <h2 class="product-title">
+                                                <a href="/Product/Detail/@item.Key">  @item.ProductFaTitle </a>
+                                            </h2>
+                                            <div class="price text-center">
+                                                <del><span>@item.MainPrice<span>تومان</span></span></del>
+                                                <ins><span>@item.SpecialPrice<span>تومان</span></span></ins>
+                                            </div>
+                                            <ul class="list-group">
+                                                @foreach (var item2 in item.ValuesList)
+                                                {
+                                                    <li class="list-group-item">
+                                                        <i class="fa fa-check"></i>
+                                                        <span class="title">@item2.PropName: </span>
+                                                        <span class="text">@item2.Value </span>
+                                                    </li>
+                                                }
+
+
+                                            </ul>
+                                            <div class="countdown-timer">
+                                                <div class="countdown h4" data-date-time="@item.EndSpecialPrice" data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                active++;
+                            }
+
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-xs-12 pl order-1 d-block">
+            <div class="slider-moments">
+                <div class="widget-suggestion widget card">
+                    <header class="card-header promo-single-headline">
+                        <h3 class="card-title">پیشنهاد لحظه‌ای</h3>
+                    </header>
+                    <div id="suggestion-slider" class="owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <div class="owl-stage-outer">
+                            <div class="owl-stage" style="transform: translate3d(1369px, 0px, 0px); transition: all 0.25s ease 0s; width: 2190px;">
+                                @foreach (var item in random)
+                                {
+                                    <div class="owl-item cloned" style="width: 273.75px;">
+                                        <div class="item">
+                                            <a href="/Product/Detail/@item.ProductId">
+                                                <img src="/CssSite/ImageSite/@item.ProductImage" class="w-100" alt="">
+                                            </a>
+                                            <h3 class="product-title">
+                                                <a href="/Product/Detail/@item.ProductId">@item.ProductFaTitle</a>
+                                            </h3>
+                                            <div class="price">
+                                                <span class="amount">
+                                                    @item.MainPrice
+                                                    <span>تومان</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+
+                            </div>
+                        </div>
+
+                        <div id="progressBar">
+                            <div class="slide-progress" style="width: 100%; transition: width 5000ms ease 0s;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- slider-moment------------------------->
+
+        </div>
+        <!-- slider-amazing------------------------>
+    </div>
+</div>
+<!-- adplacement--------------------------->
+
+<!-- adplacement--------------------------->
+<!-- slidre-product------------------------>
+<div class="container-main">
+    <div class="d-block">
+        @*@await Component.InvokeAsync("sliderforcategory",29)*@
+
+        @*<partial name="_BestSeller" model="@ViewBag.bestsellers as IEnumerable<KalaMarket.Core.ViewModel.ProductInfosVM>" />*@
+        @await Component.InvokeAsync("sliderforbestseller")
+    </div>
+
+
+    <!-- brand--------------------------------------->
+
+    <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+        <div class="slider-widget-products">
+            <div class="widget widget-product card mb-0">
+                <div class="product-carousel-brand owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                    <div class="owl-stage-outer">
+                        <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2234px;">
+                            <div class="owl-item active" style="width: 190.75px; margin-left: 10px;">
+                                <div class="item">
+                                    <a href="#" class="d-block hover-img-link">
+                                        <img src="/CssSite/ImageSite/brand/shahab.png" class="img-fluid img-brand" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="owl-item active" style="width: 190.75px; margin-left: 10px;">
+                                <div class="item">
+                                    <a href="#" class="d-block hover-img-link mt-0">
+                                        <img src="/CssSite/ImageSite/brand/adata.png" class="img-fluid img-brand" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="owl-item active" style="width: 190.75px; margin-left: 10px;">
+                                <div class="item">
+                                    <a href="#" class="d-block hover-img-link mt-0">
+                                        <img src="/CssSite/ImageSite/brand/huawei.png" class="img-fluid img-brand" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="owl-item active" style="width: 190.75px; margin-left: 10px;">
+                                <div class="item">
+                                    <a href="#" class="d-block hover-img-link mt-0">
+                                        <img src="/CssSite/ImageSite/brand/nokia.png" class="img-fluid img-brand" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="owl-item active" style="width: 190.75px; margin-left: 10px;">
+                                <div class="item">
+                                    <a href="#" class="d-block hover-img-link mt-0">
+                                        <img src="/CssSite/ImageSite/brand/panasonic.png" class="img-fluid img-brand" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="owl-item active" style="width: 190.75px; margin-left: 10px;">
+                                <div class="item">
+                                    <a href="#" class="d-block hover-img-link mt-0">
+                                        <img src="/CssSite/ImageSite/brand/parskhazar.png" class="img-fluid img-brand" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="owl-item active" style="width: 190.75px; margin-left: 10px;">
+                                <div class="item">
+                                    <a href="#" class="d-block hover-img-link mt-0">
+                                        <img src="/CssSite/ImageSite/brand/samsung.png" class="img-fluid img-brand" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="owl-item active" style="width: 190.75px; margin-left: 10px;">
+                                <div class="item">
+                                    <a href="#" class="d-block hover-img-link mt-0">
+                                        <img src="/CssSite/ImageSite/brand/xvison.png" class="img-fluid img-brand" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-nav">
+                        <button type="button" role="presentation" class="owl-prev disabled">
+                            <i class="fa fa-angle-right"></i>
+                        </button>
+                        <button type="button" role="presentation" class="owl-next">
+                            <i class="fa fa-angle-left"></i>
+                        </button>
+                    </div>
+                    <div class="owl-dots disabled"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- brand----------------------------------------->
+</div>

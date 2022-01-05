@@ -1,0 +1,27 @@
+﻿<Properties StartupConfiguration="{D7A18188-12FC-43B6-835A-D1D69C1C0909}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KalaMarket.Core/Service/ProductService.cs">
+    <Files>
+      <File FileName="KalaMarket.Core/Service/ProductService.cs" Line="767" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="KalaMarket" expanded="True">
+            <Node name="KalaMarket.Core" expanded="True">
+              <Node name="Service" expanded="True">
+                <Node name="ProductService.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.KalaMarket PreferredExecutionTarget="/Applications/Google Chrome/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
